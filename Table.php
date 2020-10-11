@@ -17,12 +17,17 @@ class Table
 
         if ($url==null)$url=url()->full();
 
-        $info = parse_url( $url );
-        $port=":".$info["port"];
-        if ($info["port"]==80||$info==443)$port="";
+        $query = parse_url($url, PHP_URL_QUERY);
 
-        parse_str( $info['query'], $query );
-        return $info['scheme'] . '://' . $info['host'] .$port. $info['path'] . '?' . http_build_query( $query ? array_merge( $query, array($key => $value ) ) : array( $key => $value ) );
+
+        if ($query) {
+            $url .= '&'.$key."=".$value;
+        } else {
+            $url .= '?'.$key."=".$value;;
+        }
+
+        return $url;
+
     }
 
     /**
