@@ -12,7 +12,7 @@ class Table
     {
 
         $this->model=new $model;
-       
+
 
     }
     public $model;
