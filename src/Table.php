@@ -89,14 +89,23 @@ class Table
     }
 
 
-    function CreateWhere($model){
+    private $where=[];
+    public function addWhere($where){
+
+        $this->where[]=$where;
+
+        return $this;
+    }
+    protected function CreateWhere($model){
         $search_type=request("search_type");
         $search=request("search");
         if ($search!=null && $search_type!=null && in_array($search_type,$this->header)){
            return $model::where($search_type,"like","%$search%");
         }
+
+        return   $model::where($this->where);
     }
-    function CreateSort(Builder $builder){
+    protected function CreateSort(Builder $builder){
         $sort=request("sort");
         if ($sort!=null &&  in_array($sort,$this->header)){
 
