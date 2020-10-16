@@ -134,12 +134,16 @@ class Table
         $search_option=[];
         $info=[];
 
+
+
+
         foreach ($this->Columns as $key=>$column){
             $header[]=[
                  "url"=>$this->generateHeaderUrl($column),
                 "title"=>$column->getTitle()
             ];
 
+            if (!$column->isSearchAbel()) continue;
             $isSelect=null;
             $search_type=request("search_type")??"";
             $search_type!=$column->getKey()?:$isSelect="selected";
