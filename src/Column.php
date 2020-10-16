@@ -104,5 +104,24 @@ namespace Cat;
 
 
 
-     function OrderBy(){}
+    private $sortable=true;
+
+     /**
+      * @return bool
+      */
+     public function isSortable(): bool
+     {
+         return $this->sortable;
+     }
+
+     /**
+      * @param bool $sortable
+      */
+     public function setSortable(bool $sortable)
+     {
+         $this->sortable = $sortable;
+         return; $this;
+     }
+
+
  }

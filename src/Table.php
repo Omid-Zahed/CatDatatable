@@ -138,8 +138,11 @@ class Table
 
 
         foreach ($this->Columns as $key=>$column){
+
+            $url=null;
+            if ($column->isSortable()==true) {$url=$this->generateHeaderUrl($column);}
             $header[]=[
-                 "url"=>$this->generateHeaderUrl($column),
+                 "url"=>$url,
                 "title"=>$column->getTitle()
             ];
 

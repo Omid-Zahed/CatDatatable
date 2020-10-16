@@ -40,10 +40,11 @@ use Cat\Table;
 
         foreach ($tableData["header"] as $key=>$header_){
             if (array_key_first($tableData["header"])==$key)
-
                 $header.="<thead><tr>";
 
-                $header.="<th><a href='".$header_["url"]."'>".$header_["title"]."</a></th>";
+                $link='';
+                empty($header_["url"])?: $link='href="'.$header_["url"].'"';
+                $header.="<th><a $link>".$header_["title"]."</a></th>";
 
             if (array_key_last($tableData["header"])==$key)
                 $header.="</tr></thead>";
@@ -54,9 +55,6 @@ use Cat\Table;
             $search_option.="<option ".$option["isSelect"]." value=".$option["value"].">".$option["title"]."</option>";
 
         }
-
-
-
 
 
 
