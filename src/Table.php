@@ -100,7 +100,7 @@ class Table
         $search_type=request("search_type");
         $search=request("search");
         if ($search!=null && $search_type!=null && in_array($search_type,$this->header)){
-           return $model::where($search_type,"like","%$search%");
+            $this->where[]=[$search_type,"like","%$search%"];
         }
 
         return   $model::where($this->where);
@@ -128,51 +128,48 @@ class Table
     }
     public function ToHtml(){
 
-        $this->GetParameterUrl();
-        $header="";
-        $body="";
-        $search_option="";
+
+
+    }
+    public function GetTable(){
+
+        $header=[];
+        $body=[];
+        $search_option=[];
+        $info=[];
 
         foreach ($this->Columns as $key=>$column){
-            if (array_key_first($this->Columns)==$key) $header.="<thead><tr>";
+            $header[]=[
+                 "url"=>$this->generateHeaderUrl($column),
+                "title"=>$column->getTitle()
+            ];
 
-            $header.="<th><a href='".$this->generateHeaderUrl($column)."'>".$column->getTitle()."</a></th>";
             $isSelect=null;
             $search_type=request("search_type")??"";
             $search_type!=$column->getTitle()?:$isSelect="selected";
-
-            $search_option.="<option ".$isSelect." value=".$column->getTitle().">".$column->getTitle()."</option>";
-
-            if (array_key_last($this->Columns)==$key) $header.="</tr></thead>";
+            $search_option[]=[
+                "isSelect"=>$isSelect,
+                "title"=>$column->getTitle(),
+                "value"=>$column->getTitle()
+            ];
         }
-
-        /**
-         * Collection $dataFetched
-         */
-        $dataFetched=$this->FetchData();
-
-
-        foreach ($dataFetched as $key=>$model){
-            $body.="<tr>";
-
+        foreach ($this->FetchData() as $key=>$model){
+            $row=[];
             foreach ($this->Columns as $column){
-                $body.="<td>".$column->getRow($model)."</td>";
-
+                $row[]=$column->getRow($model);
             }
-            $body.="</tr>";
-
+            $body[]=$row;
         }
 
         $search=request("search")??"";
-        return "<table>". $header.$body."</table>
-<form>
-<select name='search_type'>
-".$search_option."
-</select>
-<input name='search' value='".$search."'>
+        $info["search"]=$search;
 
-</form>
-";
+        return [
+            "header"=>$header,
+            "body"=>$body,
+            "search_option"=>$search_option,
+            "info"=>$info
+        ];
 
     }
 
