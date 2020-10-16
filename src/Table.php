@@ -105,7 +105,7 @@ class Table
             $this->where[]=[$search_type,"like","%$search%"];
         }
 
-        return   $model::where($this->where);
+        return   $model->where($this->where);
     }
     protected function CreateSort(Builder $builder){
         $sort=request("sort");
@@ -123,11 +123,16 @@ class Table
      * @return Illuminate\Database\Eloquent\Collection
      */
     private function FetchData(){
-        $where=$this->CreateWhere($this->model);
+
+        $where=$this->CreateWhere( $this->model::with($this->with));
         if ($where) return $this->CreateSort($where)->get();
 
         return $this->CreateSort($this->model::where("id","!=",0))->get();
     }
+
+
+
+
 
     public function GetTable(){
 
@@ -166,6 +171,7 @@ class Table
             $body[]=$row;
         }
 
+        dd($model);
         $search=request("search")??"";
         $info["search"]=$search;
 
@@ -178,6 +184,24 @@ class Table
 
     }
 
+
+    protected $with=[];
+    /**
+     * @return array
+     */
+    public function getWith(): array
+    {
+        return $this->with;
+    }
+
+    /**
+     * @param array $with
+     */
+    public function setWith(array $with)
+    {
+        $this->with = $with;
+        return $this;
+    }
 
 
 }
