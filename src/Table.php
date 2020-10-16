@@ -76,10 +76,10 @@ class Table
      * @param Column|string $Column
      * @return Table
      */
-    public function setColumns( $Column): Table
+    public function setColumns( $Column,$key=null): Table
     {
         if (is_string($Column)){
-            $Column=new Column($Column);
+            $Column=new Column($Column,$key);
         }
         if(!($Column instanceof Column)) throw new  Exception("Column param should string or Cat\Column");
 
