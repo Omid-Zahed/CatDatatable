@@ -126,11 +126,7 @@ class Table
 
         return $this->CreateSort($this->model::where("id","!=",0))->get();
     }
-    public function ToHtml(){
 
-
-
-    }
     public function GetTable(){
 
         $header=[];
