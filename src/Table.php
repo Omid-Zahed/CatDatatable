@@ -81,7 +81,9 @@ class Table
         if (is_string($Column)){
             $Column=new Column($Column);
         }
-        if(get_class($Column)!="Cat\Column") throw new  Exception("Column param should string or Cat\Column");
+        if(!($Column instanceof Column)) throw new  Exception("Column param should string or Cat\Column");
+
+
 
         $this->header[]=$Column->getTitle();
         $this->Columns[]= $Column;
