@@ -54,16 +54,16 @@ class Table
        return $result;
     }
     protected  function generateHeaderUrl(Column $column){
-        $title=$column->getTitle();
+        $key=$column->getKey();
         $params=$this->GetParameterUrl();
-        $isExistParamInUrl=in_array($title,$params);
+        $isExistParamInUrl=in_array($key,$params);
 
         if ($isExistParamInUrl)  {
             $sort_type=$params["sort_type"]??"asc";
             $sort_type=="asc"?$sort_type="desc":$sort_type="asc";
-            return $this->addToURL(["sort"=>$title,"sort_type"=>$sort_type]);
+            return $this->addToURL(["sort"=>$key,"sort_type"=>$sort_type]);
         }
-       return $this->addToURL(["sort"=>$title,"sort_type"=>"asc"]);
+       return $this->addToURL(["sort"=>$key,"sort_type"=>"asc"]);
     }
 
     /**
@@ -142,11 +142,11 @@ class Table
 
             $isSelect=null;
             $search_type=request("search_type")??"";
-            $search_type!=$column->getTitle()?:$isSelect="selected";
+            $search_type!=$column->getKey()?:$isSelect="selected";
             $search_option[]=[
                 "isSelect"=>$isSelect,
                 "title"=>$column->getTitle(),
-                "value"=>$column->getTitle()
+                "value"=>$column->getKey()
             ];
         }
         foreach ($this->FetchData() as $key=>$model){

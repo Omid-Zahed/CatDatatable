@@ -7,14 +7,27 @@ namespace Cat;
 
 
 
-        public function __construct($title)
+        public function __construct($title,$key=null)
     {
+        !is_null($key)?:$key=$title;
+        $this->key=$key;
         $this->title=$title;
         $this->SearchFunction=function ($value, $model){
             return $model;
         };
-        $this->getRowFunction=function  (Model $model){ return $model[$this->title];};
+        $this->getRowFunction=function  (Model $model){ return $model[$this->key];};
     }
+
+
+    private $key;
+
+     /**
+      * @return mixed
+      */
+     public function getKey()
+     {
+         return $this->key;
+     }
 
          private $title;
         /**
