@@ -80,13 +80,14 @@ use Cat\Table;
 
 
 
+        $TableName=$this->Table->getTableName();
         return
            "
 
 
             <form ".$id_form.$class_form." >
-                <select $className_input name='search_type'>$search_option</select>
-                <input placeholder='جستجو' $className_input name='search' value='".$tableData["info"]["search"]."'>
+                <select $className_input name='".$TableName."_search_type'>$search_option</select>
+                <input placeholder='جستجو' $className_input name='".$TableName."_search' value='".$tableData["info"]["search"]."'>
             </form>
 
 

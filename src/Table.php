@@ -59,13 +59,21 @@ class Table
         $isExistParamInUrl=in_array($key,$params);
 
         if ($isExistParamInUrl)  {
-            $sort_type=$params["sort_type"]??"asc";
+            $sort_type=$params[$this->TableName."_sort_type"]??"asc";
             $sort_type=="asc"?$sort_type="desc":$sort_type="asc";
-            return $this->addToURL(["sort"=>$key,"sort_type"=>$sort_type]);
+            return $this->addToURL([$this->TableName."_sort"=>$key,$this->TableName."_sort_type"=>$sort_type]);
         }
-       return $this->addToURL(["sort"=>$key,"sort_type"=>"asc"]);
+       return $this->addToURL([$this->TableName."_sort"=>$key,$this->TableName."_sort_type"=>"asc"]);
     }
 
+    private string $TableName="";
+    public function getTableName(){
+        return $this->TableName;
+    }
+    public function addTableName($name){
+        $this->TableName=$name;
+        return $this;
+    }
     /**
      * @var Column[] $Columns
      */
@@ -99,8 +107,8 @@ class Table
         return $this;
     }
     protected function CreateWhere($model){
-        $search_type=request("search_type");
-        $search=request("search");
+        $search_type=request($this->TableName."_search_type");
+        $search=request($this->TableName."_search");
         if ($search!=null && $search_type!=null && in_array($search_type,$this->header)){
             $this->where[]=[$search_type,"like","%$search%"];
         }
@@ -108,10 +116,10 @@ class Table
         return   $model->where($this->where);
     }
     protected function CreateSort(Builder $builder){
-        $sort=request("sort");
+        $sort=request($this->TableName."_sort");
         if ($sort!=null &&  in_array($sort,$this->header)){
 
-            $sort_type=request("sort_type")??"desc";
+            $sort_type=request($this->TableName."_sort_type")??"desc";
             in_array($sort_type,["asc","desc"])==true?:$sort_type="desc";
 
 
@@ -148,6 +156,7 @@ class Table
 
             $url=null;
             if ($column->isSortable()==true) {$url=$this->generateHeaderUrl($column);}
+
             $header[]=[
                  "url"=>$url,
                 "title"=>$column->getTitle()
@@ -155,7 +164,7 @@ class Table
 
             if (!$column->isSearchAbel()) continue;
             $isSelect=null;
-            $search_type=request("search_type")??"";
+            $search_type=request($this->TableName."_search_type")??"";
             $search_type!=$column->getKey()?:$isSelect="selected";
             $search_option[]=[
                 "isSelect"=>$isSelect,
@@ -172,7 +181,7 @@ class Table
         }
 
 
-        $search=request("search")??"";
+        $search=request($this->TableName."_search")??"";
         $info["search"]=$search;
 
         return [
