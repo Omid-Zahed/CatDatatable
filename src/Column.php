@@ -86,7 +86,7 @@ namespace Cat;
     }
 
 
-     private $getRowFunction;
+     protected $getRowFunction;
      function getRow(Model $model){
         return $this->getRowFunction->call($this,$model);
     }
