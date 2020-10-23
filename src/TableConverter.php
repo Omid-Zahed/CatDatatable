@@ -70,13 +70,10 @@ use Cat\Table;
         }
 
 
-        is_null($this->id)?$id="":$id=" id=".$this->id;
-        is_null($this->className)?$class="":$class=" class=".$this->className;
 
-        is_null($this->id_form)?$id_form="":$id_form=" id=".$this->id_form;
-        is_null($this->className_form)?$class_form="":$class_form=" class=".$this->className_form;
 
-        is_null($this->className_input)?$className_input="":$className_input=" class='".$this->className_input."'";
+
+
 
 
 
@@ -85,13 +82,13 @@ use Cat\Table;
            "
 
 
-            <form ".$id_form.$class_form." >
-                <select $className_input name='".$TableName."_search_type'>$search_option</select>
-                <input placeholder='جستجو' $className_input name='".$TableName."_search' value='".$tableData["info"]["search"]."'>
+            <form id='".$this->id_form."' class='".$this->className_form."' >
+                <select class='".$this->className_input."' name='".$TableName."_search_type'>$search_option</select>
+                <input placeholder='جستجو' class='".$this->className_input."' name='".$TableName."_search' value='".$tableData["info"]["search"]."'>
             </form>
 
 
-            <table ".$id.$class." >". $header.$body."</table>
+            <table id='.$this->id.'  class='".$this->className."' >". $header.$body."</table>
             ";
 
     }
