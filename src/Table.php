@@ -85,7 +85,7 @@ class Table
 
 
 
-        $this->header[]=$Column->getTitle();
+        $this->header[]=$Column->getKey();
         $this->Columns[]= $Column;
         return $this;
     }
@@ -171,7 +171,7 @@ class Table
             $body[]=$row;
         }
 
-        dd($model);
+
         $search=request("search")??"";
         $info["search"]=$search;
 
